@@ -1,0 +1,83 @@
+CREATE TABLE nomes (
+    nome VARCHAR(50)
+);
+
+INSERT INTO nomes (nome) VALUES
+    ('Roberta'),
+    ('Roberto'),
+    ('Maria Clara'),
+    ('João');
+SELECT UPPER(nome) as nome_em_maiusculas FROM nomes;
+SELECT nome, LENGTH(nome) as tamanho_do_nome FROM nomes;
+SELECT
+    CASE
+        WHEN nome LIKE '%João%' OR nome LIKE '%Roberto%' THEN CONCAT('Sr. ', nome)
+        ELSE CONCAT('Sra. ', nome)
+    END as tratamento_nome
+FROM nomes;
+SELECT 
+    CONCAT(
+        CASE WHEN sexo = 'Masculino' THEN 'Sr. ' ELSE 'Sra. ' END, 
+        nome
+    ) AS nome_com_tratamento
+FROM pessoas;
+
+
+CREATE TABLE produtos (
+    produto VARCHAR(255),
+    preco DECIMAL(10, 2),
+    quantidade INT
+);
+SELECT produto, ROUND(preco, 2) AS preco_arredondado, quantidade FROM produtos;
+SELECT produto, preco, ABS(quantidade) AS quantidade_absoluta FROM produtos;
+SELECT AVG(preco) AS media_precos FROM produtos;
+SELECT produto, preco, quantidade,
+   
+
+IF(quantidade = 0, 'Fora de estoque', 'Em estoque') AS status_estoque
+FROM produtos;
+SELECT produto, preco, quantidade,
+    CASE
+        WHEN preco <= 10 THEN 'Barato'
+        WHEN preco > 10 AND preco <= 50 THEN 'Médio'
+        WHEN preco > 50 THEN 'Caro'
+    END AS categoria_preco
+FROM produtos;
+
+
+DELIMITER //
+CREATE FUNCTION TOTAL_VALOR(preco DECIMAL(10, 2), quantidade INT)
+RETURNS DECIMAL(10, 2)
+BEGIN
+    DECLARE total DECIMAL(10, 2);
+    SET total = preco * quantidade;
+    RETURN total;
+END;
+//
+DELIMITER ;
+SELECT produto, preco, quantidade, TOTAL_VALOR(preco, quantidade) AS valor_total
+FROM produtos;
+
+SELECT COUNT(*) AS total_de_produtos FROM produtos;
+SELECT produto, preco
+FROM produtos
+WHERE preco = (SELECT MAX(preco) FROM produtos);
+SELECT produto, preco
+FROM produtos
+WHERE preco = (SELECT MIN(preco) FROM produtos);
+SELECT SUM(IF(quantidade > 0, preco, 0)) AS soma_total_estoque
+FROM produtos;
+
+def fatorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * fatorial(n - 1)
+def f_exponencial(base, expoente):
+    return base ** expoente
+def e_palindromo(palavra):
+    palavra = palavra.lower()
+ palavra = palavra.replace(" ", "")
+ return palavra == palavra[::-1]
+
+
